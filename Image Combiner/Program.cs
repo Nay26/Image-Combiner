@@ -28,7 +28,7 @@ namespace Image_Combiner
             files.Add(@"Head\");
             ImageCombiner combine2 = new ImageCombiner(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\", @"CreatedImage\", ".png", ".jpeg",files );
             combine2.CreateImage(444,rnd);
-           
+           //Test Comment
             
             Console.WriteLine("Done");
             Console.ReadLine();
