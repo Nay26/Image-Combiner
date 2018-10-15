@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Image_Combiner
 {
@@ -32,16 +29,26 @@ namespace Image_Combiner
             FolderNames.Add(@"Head\");
         }
 
+        public ImageCombiner(string filepath, string outputdirectory, string inputimagedirectory, string outputimageextension, List<string> foldernames) : this()
+        {
+            FilePath = filepath;
+            OutputDirectory = outputdirectory;
+            InputImageExtension = InputImageExtension;
+            OutputImageExtension = outputimageextension;
+            FolderNames = foldernames;
+        }
+
         public void CreateImage(int outputFileName, Random rnd)
         {
 
             List<Image> Layers = new List<Image>();
             foreach (string folder in FolderNames)
             {
-                Layers.Add(SelectRandomImageFromFile(folder, rnd));
+                Layers.Add(SelectRandomImageFromFile(folder, rnd)); 
             }
                        
             Bitmap output = MergeImageLayers(Layers);
+
             string completeOutputPath = FilePath + OutputDirectory + outputFileName + OutputImageExtension;
             switch (OutputImageExtension)
             {

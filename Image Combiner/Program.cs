@@ -16,10 +16,20 @@ namespace Image_Combiner
         {
             int outputFileName = 534;
             Random rnd = new Random();
+
             ImageCombiner combine = new ImageCombiner();
             combine.CreateImage(outputFileName, rnd);
             combine.OutputImageExtension = ".gif";
             combine.CreateImage(645, rnd);
+
+
+            List<string> files = new List<string>();
+            files.Add(@"Hair\");
+            files.Add(@"Head\");
+            ImageCombiner combine2 = new ImageCombiner(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\", @"CreatedImage\", ".png", ".jpeg",files );
+            combine2.CreateImage(444,rnd);
+           
+            
             Console.WriteLine("Done");
             Console.ReadLine();
         }
