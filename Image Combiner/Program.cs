@@ -28,7 +28,7 @@ namespace Image_Combiner
            
             RandomFileGrabber grabber = new RandomFileGrabber(filePath, inputImageExtension, layerDirectories);
             List<Image> imageLayers = grabber.SelectRandomImageFromDirectories(rnd);
-
+            //test comment split
             ImageCombiner combine = new ImageCombiner(filePath, outputDirectory, outputImageExtension);
             Bitmap outputImage = combine.MergeImageLayers(imageLayers);
             combine.SaveImage(outputImage,outputFileName);
