@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,42 +12,46 @@ namespace Image_Combiner
 {
     class Program
     {
-        static void Main(string[] args)
+        public static string filePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
+        // These will be passed in when running, PersonId is for testing
+        public static Random rnd = new Random();
+        public static int PersonID = 524;
+
+        static void Main(string[] args)        
         {
-            Image firstimage = Image.FromFile(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\Hair\hair.png");
-            Image secondimage = Image.FromFile(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\Head\head.png");
-            Bitmap output = MergeTwoImages(firstimage,secondimage);
-            output.Save(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\CreatedImage\img.png", ImageFormat.Png);
+            List<Image> Layers = new List<Image>();
+            // Your Layer Folders Here:
+            Layers.Add(SelectRandomImageFromFile(@"Hair\"));
+            Layers.Add(SelectRandomImageFromFile(@"Head\"));
+            Bitmap output = MergeImageLayers(Layers);
+            output.Save(filePath+@"CreatedImage\" + PersonID + ".png", ImageFormat.Png);
         }
 
-        public static Bitmap MergeTwoImages(Image firstImage, Image secondImage)
+        private static Image SelectRandomImageFromFile(string folder)
         {
-            if (firstImage == null)
-            {
-                throw new ArgumentNullException("firstImage");
-            }
+            DirectoryInfo d = new DirectoryInfo(filePath+folder);
+            FileInfo[] Files = d.GetFiles("*.png"); 
+            string fileName = Files[rnd.Next(0,Files.Length)].Name;
+            Image chosenImage = Image.FromFile(filePath+folder+fileName);
+            return chosenImage;
+        }
 
-            if (secondImage == null)
-            {
-                throw new ArgumentNullException("secondImage");
-            }
-
-            int outputImageWidth = firstImage.Width;
-
-            int outputImageHeight = firstImage.Height;
-
+        public static Bitmap MergeImageLayers (List<Image> Layers)
+        {
+            int outputImageWidth = Layers[0].Width;
+            int outputImageHeight = Layers[0].Height;
             Bitmap outputImage = new Bitmap(outputImageWidth, outputImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
             using (Graphics graphics = Graphics.FromImage(outputImage))
             {
-                graphics.DrawImage(firstImage, new Rectangle(new Point(), firstImage.Size),
-                    new Rectangle(new Point(), firstImage.Size), GraphicsUnit.Pixel);
-                graphics.DrawImage(secondImage, new Rectangle(new Point(), secondImage.Size),
-                    new Rectangle(new Point(), secondImage.Size), GraphicsUnit.Pixel);
+                for (int i = 0; i < Layers.Count; i++)
+                {
+                    graphics.DrawImage(Layers[i], new Rectangle(new Point(), Layers[i].Size),
+                    new Rectangle(new Point(), Layers[i].Size), GraphicsUnit.Pixel);
+                }                               
             }
-
             return outputImage;
         }
+        
 
 
     }
