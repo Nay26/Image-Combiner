@@ -13,13 +13,15 @@ namespace Image_Combiner
     {
         public string FilePath { get; set; }
         public string OutputDirectory { get; set; }
-        public string ImageExtension { get; set; }              
+        public string InputImageExtension { get; set; }
+        public string OutputImageExtension { get; set; }
 
         public ImageCombiner()
         {
             FilePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
             OutputDirectory = @"CreatedImage\";
-            ImageExtension = ".png";
+            InputImageExtension = ".png";
+            OutputImageExtension = ".png";
         }
 
         public void CreateImage(int outputFileName, Random rnd)
@@ -31,34 +33,34 @@ namespace Image_Combiner
             Layers.Add(SelectRandomImageFromFile(@"Head\", rnd));
             
             Bitmap output = MergeImageLayers(Layers);
-            switch (ImageExtension)
+            string completeOutputPath = FilePath + OutputDirectory + outputFileName + OutputImageExtension;
+            switch (OutputImageExtension)
             {
                 case (".png"):
-                    output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Png);
+                    output.Save(completeOutputPath, ImageFormat.Png);
                     break;
                 case (".bmp"):
-                    output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Bmp);
+                    output.Save(completeOutputPath, ImageFormat.Bmp);
                     break;
                 case (".jpeg"):
-                    output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Jpeg);
+                    output.Save(completeOutputPath, ImageFormat.Jpeg);
                     break;
                 case (".gif"):
-                    output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Gif);
+                    output.Save(completeOutputPath, ImageFormat.Gif);
                     break;
                 case (".tif"):
-                    output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Tiff);
+                    output.Save(completeOutputPath, ImageFormat.Tiff);
                     break;
                 default:
                     Console.WriteLine("Error, invalid extension supplied.");
                     break;
-            }
-           // output.Save(FilePath + OutputDirectory + outputFileName + ImageExtension, ImageFormat.Png);
+            }         
         }
 
         private Image SelectRandomImageFromFile(string folder, Random rnd)
         {
             DirectoryInfo d = new DirectoryInfo(FilePath + folder);
-            FileInfo[] Files = d.GetFiles("*"+ImageExtension);
+            FileInfo[] Files = d.GetFiles("*"+InputImageExtension);
             string fileName = Files[rnd.Next(0, Files.Length)].Name;
             Image chosenImage = Image.FromFile(FilePath + folder + fileName);
             return chosenImage;

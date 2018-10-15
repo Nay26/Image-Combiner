@@ -18,6 +18,7 @@ namespace Image_Combiner
             Random rnd = new Random();
             ImageCombiner combine = new ImageCombiner();
             combine.CreateImage(outputFileName, rnd);
+            combine.OutputImageExtension = ".gif";
             combine.CreateImage(645, rnd);
             Console.WriteLine("Done");
             Console.ReadLine();
