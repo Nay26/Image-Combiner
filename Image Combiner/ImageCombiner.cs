@@ -77,10 +77,10 @@ namespace Image_Combiner
             Bitmap outputImage = new Bitmap(outputImageWidth, outputImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(outputImage))
             {
-                for (int i = 0; i < Layers.Count; i++)
+                foreach(Image image in Layers)
                 {
-                    graphics.DrawImage(Layers[i], new Rectangle(new Point(), Layers[i].Size),
-                    new Rectangle(new Point(), Layers[i].Size), GraphicsUnit.Pixel);
+                    graphics.DrawImage(image, new Rectangle(new Point(), image.Size),
+                    new Rectangle(new Point(), image.Size), GraphicsUnit.Pixel);
                 }
             }
             return outputImage;
