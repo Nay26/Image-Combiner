@@ -19,7 +19,7 @@ namespace Image_Combiner
 
             ImageCombiner combine = new ImageCombiner();
             combine.CreateImage(outputFileName, rnd);
-            combine.OutputImageExtension = ".gif";
+            combine.outputImageExtension = ".gif";
             combine.CreateImage(645, rnd);
 
 

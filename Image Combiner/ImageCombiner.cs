@@ -13,44 +13,44 @@ namespace Image_Combiner
     /// </summary>
     class ImageCombiner
     {
-        public string FilePath { get; set; }
-        public string OutputDirectory { get; set; }
-        public string InputImageExtension { get; set; }
-        public string OutputImageExtension { get; set; }
-        public List<string> FolderNames = new List<string>();
+        public string filePath;
+        public string outputDirectory;
+        public string inputImageExtension;
+        public string outputImageExtension;
+        public List<string> layerDirectories = new List<string>();
 
         public ImageCombiner()
         {
-            FilePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
-            OutputDirectory = @"CreatedImage\";
-            InputImageExtension = ".png";
-            OutputImageExtension = ".png";
-            FolderNames.Add(@"Hair\");
-            FolderNames.Add(@"Head\");
+            filePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
+            outputDirectory = @"CreatedImage\";
+            inputImageExtension = ".png";
+            outputImageExtension = ".png";
+            layerDirectories.Add(@"Hair\");
+            layerDirectories.Add(@"Head\");
         }
 
-        public ImageCombiner(string filepath, string outputdirectory, string inputimagedirectory, string outputimageextension, List<string> foldernames) : this()
+        public ImageCombiner(string filepath, string outputdirectory, string inputimageextension, string outputimageextension, List<string> layerdirectories) : this()
         {
-            FilePath = filepath;
-            OutputDirectory = outputdirectory;
-            InputImageExtension = InputImageExtension;
-            OutputImageExtension = outputimageextension;
-            FolderNames = foldernames;
+            filePath = filepath;
+            outputDirectory = outputdirectory;
+            inputImageExtension = inputimageextension;
+            outputImageExtension = outputimageextension;
+            layerDirectories = layerdirectories;
         }
 
         public void CreateImage(int outputFileName, Random rnd)
         {
 
             List<Image> Layers = new List<Image>();
-            foreach (string folder in FolderNames)
+            foreach (string directory in layerDirectories)
             {
-                Layers.Add(SelectRandomImageFromFile(folder, rnd)); 
+                Layers.Add(SelectRandomImageFromDirectory(directory, rnd)); 
             }
                        
             Bitmap output = MergeImageLayers(Layers);
 
-            string completeOutputPath = FilePath + OutputDirectory + outputFileName + OutputImageExtension;
-            switch (OutputImageExtension)
+            string completeOutputPath = filePath + outputDirectory + outputFileName + outputImageExtension;
+            switch (outputImageExtension)
             {
                 case (".png"):
                     output.Save(completeOutputPath, ImageFormat.Png);
@@ -73,23 +73,23 @@ namespace Image_Combiner
             }         
         }
 
-        private Image SelectRandomImageFromFile(string folder, Random rnd)
+        private Image SelectRandomImageFromDirectory(string directory, Random rnd)
         {
-            DirectoryInfo d = new DirectoryInfo(FilePath + folder);
-            FileInfo[] Files = d.GetFiles("*"+InputImageExtension);
-            string fileName = Files[rnd.Next(0, Files.Length)].Name;
-            Image chosenImage = Image.FromFile(FilePath + folder + fileName);
+            DirectoryInfo d = new DirectoryInfo(filePath + directory);
+            FileInfo[] files = d.GetFiles("*"+inputImageExtension);
+            string fileName = files[rnd.Next(0, files.Length)].Name;
+            Image chosenImage = Image.FromFile(filePath + directory + fileName);
             return chosenImage;
         }
 
-        private Bitmap MergeImageLayers(List<Image> Layers)
+        private Bitmap MergeImageLayers(List<Image> layers)
         {
-            int outputImageWidth = Layers[0].Width;
-            int outputImageHeight = Layers[0].Height;
+            int outputImageWidth = layers[0].Width;
+            int outputImageHeight = layers[0].Height;
             Bitmap outputImage = new Bitmap(outputImageWidth, outputImageHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(outputImage))
             {
-                foreach(Image image in Layers)
+                foreach(Image image in layers)
                 {
                     graphics.DrawImage(image, new Rectangle(new Point(), image.Size),
                     new Rectangle(new Point(), image.Size), GraphicsUnit.Pixel);
