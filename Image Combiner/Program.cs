@@ -16,20 +16,22 @@ namespace Image_Combiner
         {
             int outputFileName = 534;
             Random rnd = new Random();
+                  
+            string inputFilePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
+            string outputFilePath = inputFilePath + @"CreatedImage\";
+            string inputImageExtension = ".png";
+            string outputImageExtension = ".png";
 
-            ImageCombiner combine = new ImageCombiner();
-            combine.CreateImage(outputFileName, rnd);
-            combine.outputImageExtension = ".gif";
-            combine.CreateImage(645, rnd);
-
-
-            List<string> files = new List<string>();
-            files.Add(@"Hair\");
-            files.Add(@"Head\");
-            ImageCombiner combine2 = new ImageCombiner(@"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\", @"CreatedImage\", ".png", ".jpeg",files );
-            combine2.CreateImage(444,rnd);
-           //Test Comment
-            
+            List<string> layerDirectories = new List<string>();
+            layerDirectories.Add(@"Hair\");
+            layerDirectories.Add(@"Head\");
+           
+            RandomFileGrabber grabber = new RandomFileGrabber(inputFilePath, inputImageExtension, layerDirectories);
+            List<Image> imageLayers = grabber.SelectRandomImageFromDirectories(rnd);
+            ImageCombiner combine = new ImageCombiner(outputFilePath, outputImageExtension);
+            Bitmap outputImage = combine.MergeImageLayers(imageLayers);
+            combine.SaveImage(outputImage,outputFileName);
+                       
             Console.WriteLine("Done");
             Console.ReadLine();
         }
