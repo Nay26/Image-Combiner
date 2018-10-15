@@ -12,26 +12,24 @@ namespace Image_Combiner
     class ImageCombiner
     {
         public string filePath;
-        public string outputDirectory;
+        public string outputFilePath;
         public string outputImageExtension;
 
         public ImageCombiner()
         {
-            filePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
-            outputDirectory = @"CreatedImage\";
+            outputFilePath = @"C: \Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\CreatedImage\";
             outputImageExtension = ".png";
         }
 
-        public ImageCombiner(string filepath, string outputdirectory, string outputimageextension) : this()
+        public ImageCombiner(string outputfilepath, string outputimageextension) : this()
         {
-            filePath = filepath;
-            outputDirectory = outputdirectory;
+            outputFilePath = outputfilepath;
             outputImageExtension = outputimageextension;
         }
 
         public void SaveImage(Bitmap output, int outputFileName)
         {
-            string completeOutputPath = filePath + outputDirectory + outputFileName + outputImageExtension;
+            string completeOutputPath = outputFilePath + outputFileName + outputImageExtension;
             switch (outputImageExtension)
             {
                 case (".png"):
