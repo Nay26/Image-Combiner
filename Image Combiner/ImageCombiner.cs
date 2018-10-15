@@ -15,6 +15,7 @@ namespace Image_Combiner
         public string OutputDirectory { get; set; }
         public string InputImageExtension { get; set; }
         public string OutputImageExtension { get; set; }
+        public List<string> FolderNames = new List<string>();
 
         public ImageCombiner()
         {
@@ -22,16 +23,19 @@ namespace Image_Combiner
             OutputDirectory = @"CreatedImage\";
             InputImageExtension = ".png";
             OutputImageExtension = ".png";
+            FolderNames.Add(@"Hair\");
+            FolderNames.Add(@"Head\");
         }
 
         public void CreateImage(int outputFileName, Random rnd)
         {
-            List<Image> Layers = new List<Image>();
 
-            // Add Your Layer Folders Here:
-            Layers.Add(SelectRandomImageFromFile(@"Hair\", rnd));
-            Layers.Add(SelectRandomImageFromFile(@"Head\", rnd));
-            
+            List<Image> Layers = new List<Image>();
+            foreach (string folder in FolderNames)
+            {
+                Layers.Add(SelectRandomImageFromFile(folder, rnd));
+            }
+                       
             Bitmap output = MergeImageLayers(Layers);
             string completeOutputPath = FilePath + OutputDirectory + outputFileName + OutputImageExtension;
             switch (OutputImageExtension)
