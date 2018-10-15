@@ -11,7 +11,6 @@ namespace Image_Combiner
     /// </summary>
     class ImageCombiner
     {
-        public string filePath;
         public string outputFilePath;
         public string outputImageExtension;
 
