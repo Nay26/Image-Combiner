@@ -7,48 +7,30 @@ using System.IO;
 namespace Image_Combiner
 {
     /// <summary>
-    /// Takes multiple folders each containing images of the same size and extension.
-    /// Creates a new image that layers one randomly selected file from each folder on top of eachother.
-    /// Outputs that file in a specified folder with a specified extension.
+    /// Takes an Image List and creates a new image consisting of images layed ontop of eachother.
     /// </summary>
     class ImageCombiner
     {
         public string filePath;
         public string outputDirectory;
-        public string inputImageExtension;
         public string outputImageExtension;
-        public List<string> layerDirectories = new List<string>();
 
         public ImageCombiner()
         {
             filePath = @"C:\Users\Naomi\source\repos\Image Combiner\Image Combiner\bin\Debug\Creation\";
             outputDirectory = @"CreatedImage\";
-            inputImageExtension = ".png";
             outputImageExtension = ".png";
-            layerDirectories.Add(@"Hair\");
-            layerDirectories.Add(@"Head\");
         }
 
-        public ImageCombiner(string filepath, string outputdirectory, string inputimageextension, string outputimageextension, List<string> layerdirectories) : this()
+        public ImageCombiner(string filepath, string outputdirectory, string outputimageextension) : this()
         {
             filePath = filepath;
             outputDirectory = outputdirectory;
-            inputImageExtension = inputimageextension;
             outputImageExtension = outputimageextension;
-            layerDirectories = layerdirectories;
         }
 
-        public void CreateImage(int outputFileName, Random rnd)
+        public void SaveImage(Bitmap output, int outputFileName)
         {
-
-            List<Image> Layers = new List<Image>();
-            foreach (string directory in layerDirectories)
-            {
-                Layers.Add(SelectRandomImageFromDirectory(directory, rnd)); 
-            }
-                       
-            Bitmap output = MergeImageLayers(Layers);
-
             string completeOutputPath = filePath + outputDirectory + outputFileName + outputImageExtension;
             switch (outputImageExtension)
             {
@@ -73,16 +55,7 @@ namespace Image_Combiner
             }         
         }
 
-        private Image SelectRandomImageFromDirectory(string directory, Random rnd)
-        {
-            DirectoryInfo d = new DirectoryInfo(filePath + directory);
-            FileInfo[] files = d.GetFiles("*"+inputImageExtension);
-            string fileName = files[rnd.Next(0, files.Length)].Name;
-            Image chosenImage = Image.FromFile(filePath + directory + fileName);
-            return chosenImage;
-        }
-
-        private Bitmap MergeImageLayers(List<Image> layers)
+        public Bitmap MergeImageLayers(List<Image> layers)
         {
             int outputImageWidth = layers[0].Width;
             int outputImageHeight = layers[0].Height;
