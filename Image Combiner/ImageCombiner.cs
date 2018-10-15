@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Image_Combiner
 {
+    /// <summary>
+    /// Takes multiple folders each containing images of the same size and extension.
+    /// Creates a new image that layers one randomly selected file from each folder on top of eachother.
+    /// Outputs that file in a specified folder with a specified extension.
+    /// </summary>
     class ImageCombiner
     {
         public string FilePath { get; set; }
